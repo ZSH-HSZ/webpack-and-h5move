@@ -1,6 +1,8 @@
 <template>
   <div class="example">
-    <div ref="touchBox" class="touch-box" v-move></div>
+    <div ref="touchBox" class="touch-box" v-move>
+      {{ window }}
+    </div>
   </div>
 </template>
 
@@ -8,13 +10,15 @@
 export default {
   data() {
     return {
-      msg: "Hello world! ",
+      msg: 'Hello world! ',
+      window: '1212',
     };
   },
   mounted() {
     const newName = { a: { b: { c: 1 } } };
     // drag(this.$refs.touchBox);
     console.log(newName?.a?.b?.c?.d);
+    console.log(_);
   },
 };
 </script>
