@@ -27,6 +27,7 @@
 import PDFJS from "pdfjs-dist";
 import workerSrc from "pdfjs-dist/build/pdf.worker.entry";
 import { fabric } from "fabric";
+import 'fabric/src/mixins/eraser_brush.mixin.js'
 export default {
   data() {
     return {
@@ -175,21 +176,19 @@ export default {
       this.fabricObj.freeDrawingBrush.width = 2;
       this.fabricObj.setWidth(this.canvasWidth);
       this.fabricObj.setHeight(700);
-      const bg = document.getElementById("canvas1").toDataURL("image/png");
       const canvas1 = document.getElementById("canvas1")
       const {width, height} = canvas1
-      this.fabricObj.setBackgroundImage(
-        document.getElementById("canvas1").toDataURL("image/png"),
-        this.fabricObj.renderAll.bind(this.fabricObj),
-        {
-            scaleX: 500/width,
-            scaleY: 500/width
-        }
-      );
+       fabric.Image.fromURL(document.getElementById("canvas1").toDataURL("image/png"), img => {
+          this.fabricObj.add(img.set({ left: 0, top: 0 }).scale(0.25));
+        });
+      // this.fabricObj.setBackgroundImage(
+      //   this.fabricObj.renderAll.bind(this.fabricObj),
+      //   {
+      //       scaleX: 500/width,
+      //       scaleY: 500/width
+      //   }
+      // );
       // this.fabricObj.setBackgroundImage("http://fabricjs.com/assets/honey_im_subtle.png");
-      this.fabricObj.add(
-        new fabric.Circle({ top: 140, left: 230, radius: 75, fill: "green" }),
-      );
       //绑定画板事件
       this.fabricObjAddEvent();
     },
@@ -300,9 +299,9 @@ export default {
           this.fabricObj.isDrawingMode = true;
           break;
         case "remove":
-          this.fabricObj.selection = true;
-          this.fabricObj.skipTargetFind = false;
-          this.fabricObj.selectable = true;
+          this.fabricObj.freeDrawingBrush = new fabric.EraserBrush(this.fabricObj);
+          this.fabricObj.freeDrawingBrush.width = 10;
+          this.fabricObj.isDrawingMode = true;
           break;
         case "reset":
           this.fabricObj.clear();

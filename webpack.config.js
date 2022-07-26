@@ -45,19 +45,11 @@ module.exports = {
       template: "./data/index.html",
       title: "test",
     }),
-    new webpack.ProvidePlugin({
-      _: "lodash",
-    }),
-    new CopyWebpackPlugin({
-      patterns: [
-        { from: 'data/static', to: 'static' }
-      ]
-    })
   ],
   devServer: {
     contentBase: path.join(__dirname, "build"),
     compress: true,
-    port: 9000,
+    port: 9001,
     noInfo: true,
     progress: true,
   },
